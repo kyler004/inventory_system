@@ -22,3 +22,21 @@ class SupplierSerializer(serializers.ModelSerializer):
         if value and not '@' in value:
             raise serializers.ValidationError("Invalid email format")
         return value.lower()
+
+class ProductListSerializer(serializers.ModelSerializer):
+    """
+    Docstring for ProductListSerializer
+    Lightweight serializer for product lists
+    Shows minimal info for performance
+    """
+
+    supplier_name = serializers.CharField(source='supplier.name', read_only=True)
+    is_low_stock = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = Product
+        fields = [
+            'id', 'name' ,'sku', 'supplier_name',
+            'current_stock', 'minimum_stock', 'is_low_stock', 
+            'unit_price'
+        ]
